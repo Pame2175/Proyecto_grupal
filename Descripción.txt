@@ -1,0 +1,17 @@
+Sistema de veterinaria Pamela-Sara.
+Funcionalidades a agregar:
+Módulo de emergencia.
+Para situaciones críticas donde las mascotas requieran atención inmediata, se implementará un módulo de emergencia. Este módulo ofrecerá las siguientes características:
+El módulo contará con:
+Los usuarios podrán registrar emergencias médicas para sus mascotas a través de un formulario en línea.
+El formulario recopilará información importante, como el tipo de emergencia, los síntomas observados y la ubicación del usuario.
+En el formulario se le solicitará al usuario agregar su ubicación o dirección en donde necesita la urgencia mediante un mapa interactivo.(leaflet.js)
+Se utilizará AJAX para enviar los datos del formulario al servidor de manera asíncrona y sin recargar la página.
+Una vez que el usuario envíe la emergencia, en la pantalla del administrador aparecerá un alerta instantánea para notificar sobre la situación. Además, el usuario recibirá una confirmación de que su emergencia ha sido atendida exitosamente.
+Módulo de citas.
+Uso de React-Big-Calendar
+
+A la agenda de citas existente, se  le integrará React Big Calendar para ofrecer una interfaz intuitiva y fácil de usar para agendar citas.
+
+
+link:https://www.npmjs.com/package/react-big-calendar
