@@ -45,6 +45,10 @@ const NavBar = () => {
                         </li>
                     </ul>
                 </div>
+               
+                <div className="d-flex">
+                    <NavLink to="/mascota/urgencia/crear" className="btn btn-danger" style={{ marginRight: '10px' }} type="button">URGENCIAS</NavLink>
+                </div>
                 <div className="navbar-nav ml-auto">
                     <button onClick={handleLogout} className="btn btn-outline-danger my-2 my-sm-0" type="button">Salir</button>
                 </div>

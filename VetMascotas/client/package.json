@@ -26,7 +26,10 @@
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.22.3",
     "sweetalert2": "^11.10.6",
-    "yup": "^1.4.0"
+    "yup": "^1.4.0",
+    "leaflet": "^1.9.4",
+    "leaflet-control-geocoder": "^2.4.0",
+    "leaflet-geosearch": "^3.11.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.64",

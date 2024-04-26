@@ -36,7 +36,7 @@ const UserForm = ({ formType }) => {
                 .required('Vuelva a ingredar su contraseña'),
             address: Yup.string().required('Ingresa su dirección'),
             phone:  Yup.string()
-            .matches(/^09[789]\d{8}$/, 'El número de celular no es válido')
+            .matches(/^[0-9]+$/, 'Solo se permiten números')
             .required('Ingresa tu número de celular'),
 
         }),

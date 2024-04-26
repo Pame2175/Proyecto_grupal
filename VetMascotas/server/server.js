@@ -24,5 +24,9 @@ app.use("/api/mascota", PlayerRouter);
 const UserRouter = require("./routes/user.routes");
 app.use("/api/auth", UserRouter);
 
+//RUTA PARA URGENCIA
+const UrgenciaRouter = require("./routes/urgencia.routes");
+app.use("/api/urgencia", UrgenciaRouter);
+
 
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));

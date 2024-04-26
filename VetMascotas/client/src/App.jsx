@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ListMascota from './views/ListMascota';
 import AddMascotas from './views/AddMascotas';
@@ -13,6 +13,9 @@ import InfoVeterinaria from './views/InfoVeterinaria';
 import Register from './views/Register';
 import VerCitas  from './views/VerCitas';
 import EditarCitas  from './views/EditarCitas';
+
+//urgencias
+import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
 
 
 const App = () => {
@@ -60,6 +63,13 @@ const App = () => {
                     <Route path="infoVeterinaria" element={< InfoVeterinaria />} />
                     
                 </Route>
+
+                <Route path="/mascota/urgencia/crear" element={
+                <PrivateRoute>
+                <UrgenciaForm />
+                </PrivateRoute>
+            } />
+                
                 
                 
                 
