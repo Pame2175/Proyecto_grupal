@@ -12,8 +12,6 @@ const UrgenciaForm = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const id = user._id;
-    //const [mascotas, setMascotas] = useState(null);
-
     const handleSubmit = async (
         values,
         { setSubmitting, resetForm, setErrors }
@@ -24,12 +22,13 @@ const UrgenciaForm = () => {
             values,
             { withCredentials: true }
           );
-            console.log('datos', response.data);
+            
             Swal.fire({
                 icon: "success",
                 title: "¡Éxito!",
                 text: "¡Urgencia registrada exitosamente!",
             });
+            console.log('datos', response.data);
             resetForm();
             setSubmitting(false);
             navigate("/");
@@ -55,6 +54,7 @@ const UrgenciaForm = () => {
                 descripcion: "",
                 user: id,
                 titulo: "", 
+                mascota:"",
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -102,6 +102,7 @@ const UrgenciaForm = () => {
                                         type="text"
                                         name="user_name"
                                         className="form-control"
+                                        //value={mascotaNombre}
                                     />
                                     <ErrorMessage
                                         name="firstName"
@@ -157,5 +158,5 @@ const UrgenciaForm = () => {
 
 
 
-            export default UrgenciaForm;
+export default UrgenciaForm;
 

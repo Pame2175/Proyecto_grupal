@@ -16,6 +16,7 @@ import EditarCitas  from './views/EditarCitas';
 
 //urgencias
 import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
+import UrgenciaList from './views/Urgencia-views/UrgenciaList';
 
 
 const App = () => {
@@ -63,10 +64,16 @@ const App = () => {
                     <Route path="infoVeterinaria" element={< InfoVeterinaria />} />
                     
                 </Route>
-
+                
                 <Route path="/mascota/urgencia/crear" element={
                 <PrivateRoute>
                 <UrgenciaForm />
+                </PrivateRoute>
+            } />
+
+                <Route path="/mascota/lista/urgencia" element={
+                <PrivateRoute>
+                <UrgenciaList />
                 </PrivateRoute>
             } />
                 

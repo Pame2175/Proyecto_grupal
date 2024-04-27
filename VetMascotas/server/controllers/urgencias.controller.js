@@ -1,6 +1,7 @@
 const {UrgenciaModel} = require('../models/Urgencia.model');
 const { UserModel } = require('../models/user.model')
-const { MascotaModel } = require('../models/mascota.model')
+const Mascota = require('../models/mascota.model')
+
 
 
 module.exports = {
@@ -18,13 +19,26 @@ module.exports = {
             return res.status(404).json({ error: 'Usuario no encontrado' });
         }
         console.log('user data:',userExist)
-        // //buscar mascota del usuario
-        // const mascotasDelUsuario = await MascotaModel.find({ propietarioId: userExist._id });
-        // if (!mascotasDelUsuario) {
-        //     return res.status(404).json({ error: 'Mascotas no encontradas' });
-        // }
-        //  // Obtener nombres de mascotas del usuario
-        //  const nombresDeMascotas = mascotasDelUsuario.map(mascota => mascota.nombre);
+    // Obtener el nombre de la mascota del usuario
+    const obtenerNombreMascotaPorUserId = async (userId) => {
+        try {
+            const mascota = await Mascota.findOne({ propietarioId: userId }, 'nombre');
+            if (!mascota) {
+                return null;
+            }
+            //console.log('mascota data:',mascota)
+            return mascota.nombre;
+        } catch (error) {
+            console.error('Error al obtener el nombre de la mascota:', error);
+            return null;
+        }
+    }
+    //obtener el nombre de la mascota del usuario
+    const mascotaNombre = await obtenerNombreMascotaPorUserId(userExist._id);
+
+    if (!mascotaNombre) {
+        return res.status(404).json({ error: 'Mascota no encontrada' });
+    }
 
         // Crear nueva Urgencia
         const nuevaUrgencia = new UrgenciaModel({
@@ -36,8 +50,9 @@ module.exports = {
             estado,
             titulo,
             user_name: `${userExist.firstName} ${userExist.lastName}`,
-            //mascotas: nombresDeMascotas
+            mascota: mascotaNombre
         });
+        console.log('urgencia data:',nuevaUrgencia)
         await nuevaUrgencia.save();
         res.status(201).json({ message: 'Urgencia creada correctamente' });
        } catch (error) {
@@ -71,5 +86,6 @@ module.exports = {
             res.status(500).json({ error: 'Error interno del servidor al obtener la Urgencia' });
         }
     },
-       }
+}
+
 

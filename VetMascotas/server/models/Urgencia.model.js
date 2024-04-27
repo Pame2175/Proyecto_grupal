@@ -10,6 +10,10 @@ const UrgenciaSchema = new mongoose.Schema({
     user_name: {
         type: String,
     },
+    mascota: {
+        type: String,
+        default: ''
+    },
     titulo: {
         type: String,
         required: true
