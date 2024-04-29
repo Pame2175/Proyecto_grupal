@@ -31,7 +31,7 @@ const MascotaSchema = new mongoose.Schema({
     },
     edad: {
         type: Number,
-        required: [true, 'La edad de la mascota es obligatoria'],
+        //required: [true, 'La edad de la mascota es obligatoria'],
     },
     fechaNacimiento: {
         type: Date,
