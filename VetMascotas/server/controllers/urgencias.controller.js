@@ -54,7 +54,7 @@ module.exports = {
         });
         console.log('urgencia data:',nuevaUrgencia)
         await nuevaUrgencia.save();
-        res.status(201).json({ message: 'Urgencia creada correctamente', urgencia: nuevaUrgencia });
+        res.status(201).json({ message: 'Urgencia creada correctamente', urgencia: nuevaUrgencia, mascota: mascotaNombre });
        } catch (error) {
         console.error('Error al crear la Urgencia:', error);
         res.status(500).json({ error: 'Error interno del servidor al crear la Urgencia' });

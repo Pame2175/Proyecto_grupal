@@ -12,6 +12,7 @@ const SocketLogic = () => {
     
 
     useEffect(() => {
+        if (user) {
         const socket = io.connect('http://localhost:8000');
 
         // Escuchar evento de alerta del servidor para el administrador
@@ -43,14 +44,21 @@ const SocketLogic = () => {
             });
         }
 
+
         // Limpiar el listener 
         return () => {
             socket.disconnect();
         };
-    }, []); 
+    }
+
+    }, [user]);
+
 
     return null; // Sin renderizar
-};
+}
+
+
+
 
 export default SocketLogic;
 
