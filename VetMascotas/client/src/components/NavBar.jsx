@@ -46,6 +46,9 @@ const NavBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-nav ml-auto">
+                    <li className="nav-item">
+                        <NavLink to="/mascota/cita/urgencias" className="btn btn-primary me-2">Agendar</NavLink>
+                    </li>
                     <button onClick={handleLogout} className="btn btn-outline-danger my-2 my-sm-0" type="button">Salir</button>
                 </div>
             </div>

@@ -4,6 +4,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import UserContext from '../context/UserContext';
 import { useContext } from "react";
+import Calendario from '../views/Cityemergency'; 
+
 
 const AgendarCita = () => {
     const { user } = useContext(UserContext);
@@ -42,7 +44,7 @@ const AgendarCita = () => {
         }
     };
 
-    // Cargar los veterinarios
+ 
     const cargarVeterinarios = async () => {
         try {
             const response = await axios.get('http://localhost:8000/api/mascota/veterinarios');
@@ -53,7 +55,7 @@ const AgendarCita = () => {
         }
     };
 
-    // Cargar horarios disponibles del veterinario seleccionado
+    
     const cargarHorariosDisponibles = async (veterinarioId) => {
         try {
             const response = await axios.get(`http://localhost:8000/api/mascota/veterinarios/${veterinarioId}/horarios`);
@@ -114,7 +116,7 @@ const AgendarCita = () => {
         return Object.keys(errores).length === 0;
     };
 
-    // Verificar si el horario propuesto ya está ocupado
+   
     const verificarDisponibilidad = () => {
         const [diaPropuesto, horaInicioPropuesta, horaFinPropuesta] = cita.horario.split(' - ');
 
@@ -171,131 +173,148 @@ const AgendarCita = () => {
         <div className="container">
             {cargando && <p>Cargando...</p>}
             {error && <p className="text-danger">{error}</p>}
-            {mascota && (
-                <>
-                    <h1>Agendar Cita para {mascota.nombre}</h1>
+            <div className="row">
+                <div className="col-md-6">
+                    {mascota && (
+                        <>
+                            <h1>Agendar Cita para {mascota.nombre}</h1>
+                            <form onSubmit={enviarFormulario}>
+                                {/* Datos de la mascota */}
+                                <div className="mb-3">
+                                    <label htmlFor="mascotaNombre" className="form-label">Nombre de la Mascota</label>
+                                    <input
+                                        type="text"
+                                        id="mascotaNombre"
+                                        name="mascotaNombre"
+                                        value={mascota.nombre}
+                                        readOnly
+                                        className="form-control"
+                                    />
+                                </div>
 
-                    <form onSubmit={enviarFormulario}>
-                        {/* Datos de la mascota */}
-                        <div className="mb-3">
-                            <label htmlFor="mascotaNombre" className="form-label">Nombre de la Mascota</label>
-                            <input
-                                type="text"
-                                id="mascotaNombre"
-                                name="mascotaNombre"
-                                value={mascota.nombre}
-                                readOnly
-                                className="form-control"
-                            />
-                        </div>
+                                {/* Edad de la mascota */}
+                                <div className="mb-3">
+                                    <label htmlFor="mascotaEdad" className="form-label">Edad</label>
+                                    <input
+                                        type="number"
+                                        id="mascotaEdad"
+                                        name="mascotaEdad"
+                                        value={mascota.edad}
+                                        readOnly
+                                        className="form-control"
+                                    />
+                                </div>
 
-                        {/* Edad de la mascota */}
-                        <div className="mb-3">
-                            <label htmlFor="mascotaEdad" className="form-label">Edad</label>
-                            <input
-                                type="number"
-                                id="mascotaEdad"
-                                name="mascotaEdad"
-                                value={mascota.edad}
-                                readOnly
-                                className="form-control"
-                            />
-                        </div>
+                                {/* Raza de la mascota */}
+                                <div className="mb-3">
+                                    <label htmlFor="mascotaRaza" className="form-label">Raza</label>
+                                    <input
+                                        type="text"
+                                        id="mascotaRaza"
+                                        name="mascotaRaza"
+                                        value={mascota.razaId.nombre}
+                                        readOnly
+                                        className="form-control"
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label htmlFor="mascotaRaza" className="form-label">Raza</label>
+                                    <input
+                                        type="text"
+                                        id="mascotaRaza"
+                                        name="mascotaRaza"
+                                        value={mascota.propietarioId.firstName}
+                                        readOnly
+                                        className="form-control"
+                                    />
+                                </div>
 
-                        {/* Raza de la mascota */}
-                        <div className="mb-3">
-                            <label htmlFor="mascotaRaza" className="form-label">Raza</label>
-                            <input
-                                type="text"
-                                id="mascotaRaza"
-                                name="mascotaRaza"
-                                value={mascota.razaId.nombre}
-                                readOnly
-                                className="form-control"
-                            />
-                        </div>
-
-                        {/* Veterinario */}
-                        <div className="mb-3">
-                            <label htmlFor="veterinarioId" className="form-label">Veterinario</label>
-                            <select
-                                id="veterinarioId"
-                                name="veterinarioId"
-                                value={cita.veterinarioId}
-                                onChange={manejarCambio}
-                                className="form-control"
-                                required
-                            >
-                                <option value="" disabled>
-                                    Selecciona un veterinario
-                                </option>
-                                {veterinarios.map((veterinario) => (
-                                    <option key={veterinario._id} value={veterinario._id}>
-                                        {veterinario.nombre}
-                                    </option>
-                                ))}
-                            </select>
-                            {erroresValidacion.veterinarioId && (
-                                <p className="text-danger">{erroresValidacion.veterinarioId}</p>
-                            )}
-                        </div>
-
-                        {/* Descripción */}
-                        <div className="mb-3">
-                            <label htmlFor="descripcion" className="form-label">Descripción</label>
-                            <textarea
-                                id="descripcion"
-                                name="descripcion"
-                                value={cita.descripcion}
-                                onChange={manejarCambio}
-                                className="form-control"
-                                rows="3"
-                                required
-                            />
-                            {erroresValidacion.descripcion && (
-                                <p className="text-danger">{erroresValidacion.descripcion}</p>
-                            )}
-                        </div>
-
-                        {/* Horarios disponibles */}
-                        {horariosDisponibles.length > 0 && (
-                            <div className="mb-3">
-                                <label htmlFor="horario" className="form-label">Horarios Disponibles</label>
-                                <select
-                                    id="horario"
-                                    name="horario"
-                                    value={cita.horario}
-                                    onChange={manejarCambio}
-                                    className="form-control"
-                                    required
-                                >
-                                    <option value="" disabled>
-                                        Selecciona un horario
-                                    </option>
-                                    {horariosDisponibles.map((horario, index) => (
-                                        <option key={index} value={`${horario.dia} - ${horario.horaInicio} - ${horario.horaFin}`}>
-                                            {horario.dia} - {horario.horaInicio} - {horario.horaFin}
+                                {/* Veterinario */}
+                                <div className="mb-3">
+                                    <label htmlFor="veterinarioId" className="form-label">Veterinario</label>
+                                    <select
+                                        id="veterinarioId"
+                                        name="veterinarioId"
+                                        value={cita.veterinarioId}
+                                        onChange={manejarCambio}
+                                        className="form-control"
+                                        required
+                                    >
+                                        <option value="" disabled>
+                                            Selecciona un veterinario
                                         </option>
-                                    ))}
-                                </select>
-                                {erroresValidacion.horario && (
-                                    <p className="text-danger">{erroresValidacion.horario}</p>
+                                        {veterinarios.map((veterinario) => (
+                                            <option key={veterinario._id} value={veterinario._id}>
+                                                {veterinario.nombre}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {erroresValidacion.veterinarioId && (
+                                        <p className="text-danger">{erroresValidacion.veterinarioId}</p>
+                                    )}
+                                </div>
+
+                                {/* Descripción */}
+                                <div className="mb-3">
+                                    <label htmlFor="descripcion" className="form-label">Descripción</label>
+                                    <textarea
+                                        id="descripcion"
+                                        name="descripcion"
+                                        value={cita.descripcion}
+                                        onChange={manejarCambio}
+                                        className="form-control"
+                                        rows="3"
+                                        required
+                                    />
+                                    {erroresValidacion.descripcion && (
+                                        <p className="text-danger">{erroresValidacion.descripcion}</p>
+                                    )}
+                                </div>
+
+                               
+                                {horariosDisponibles.length > 0 && (
+                                    <div className="mb-3">
+                                        <label htmlFor="horario" className="form-label">Horarios Disponibles</label>
+                                        <select
+                                            id="horario"
+                                            name="horario"
+                                            value={cita.horario}
+                                            onChange={manejarCambio}
+                                            className="form-control"
+                                            required
+                                        >
+                                            <option value="" disabled>
+                                                Selecciona un horario
+                                            </option>
+                                            {horariosDisponibles.map((horario, index) => (
+                                                <option key={index} value={`${horario.dia} - ${horario.horaInicio} - ${horario.horaFin}`}>
+                                                    {horario.dia} - {horario.horaInicio} - {horario.horaFin}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {erroresValidacion.horario && (
+                                            <p className="text-danger">{erroresValidacion.horario}</p>
+                                        )}
+                                    </div>
                                 )}
-                            </div>
-                        )}
 
-                        {/* Botón para agendar la cita */}
-                        <button type="submit" className="btn btn-outline-primary">
-                            Agendar Cita
-                        </button>
-                    </form>
-
-                    {/* Botón para volver a la vista de la mascota */}
-                    <button onClick={() => navigate(`/`)} className="btn btn-outline-dark mt-3">
-                        Volver a la vista de la mascota
-                    </button>
-                </>
-            )}
+                                {/* Botón para agendar la cita */}
+                                <button type="submit" className="btn btn-outline-primary">
+                                    Agendar Cita
+                                </button>
+                            </form>
+                        </>
+                    )}
+                </div>
+                <div className="col-md-6">
+                   
+                  
+                </div>
+            </div>
+            
+            <button onClick={() => navigate(`/`)} className="btn btn-outline-dark mt-3">
+                Volver a la vista de la mascota
+            </button>
         </div>
     );
 };

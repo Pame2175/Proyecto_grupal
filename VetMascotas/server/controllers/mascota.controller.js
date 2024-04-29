@@ -60,18 +60,23 @@ const obtenerMascota = async (req, res) => {
         });
     }
 };
-// Controlador para obtener los datos de una mascota específica
+
 const obtenerMascotaPorId = async (req, res) => {
     try {
-        const { id } = req.params; // Obtener el ID de la mascota desde los parámetros de la URL
-        const mascota = await Mascota.findById(id).populate('tipoAnimalId razaId vacunaciones.vacunaId');
+        const { id } = req.params; 
+        const mascota = await Mascota.findById(id)
+        .populate('tipoAnimalId razaId vacunaciones.vacunaId')
+        .populate({
+            path: 'propietarioId',
+            select: 'firstName',
+        });
 
         if (!mascota) {
             // Si la mascota no se encuentra, devuelve un error 404
             return res.status(404).json({ mensaje: 'Mascota no encontrada' });
         }
 
-        // Devuelve la mascota encontrada como respuesta JSON
+        
         return res.json(mascota);
     } catch (error) {
         console.error('Error al obtener los datos de la mascota:', error);

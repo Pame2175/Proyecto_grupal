@@ -13,6 +13,7 @@ import InfoVeterinaria from './views/InfoVeterinaria';
 import Register from './views/Register';
 import VerCitas  from './views/VerCitas';
 import EditarCitas  from './views/EditarCitas';
+import CitaEmergencia  from './views/Cityemergency';
 
 
 const App = () => {
@@ -58,6 +59,7 @@ const App = () => {
                     <Route path="editar/:id" element={<EditMascotas />} />
                     <Route path="cita/:id" element={<AgendarMascotas />} />
                     <Route path="infoVeterinaria" element={< InfoVeterinaria />} />
+                    <Route path="/mascota/cita/urgencias" element={< CitaEmergencia  />} />
                     
                 </Route>
                 
