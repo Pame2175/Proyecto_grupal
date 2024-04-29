@@ -17,7 +17,7 @@ import EditarCitas  from './views/EditarCitas';
 //urgencias
 import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
 import UrgenciaList from './views/Urgencia-views/UrgenciaList';
-
+import EditarUrgencia from './views/Urgencia-views/EditarUrgencia';
 //socket.io
 import SocketLogic from './views/Urgencia-views/SocketioLogic';
 
@@ -79,6 +79,12 @@ const App = () => {
                 <Route path="/mascota/lista/urgencia" element={
                 <PrivateRoute>
                 <UrgenciaList />
+                </PrivateRoute>
+            } />
+
+                <Route path="/mascota/urgencia/:id" element={
+                <PrivateRoute>
+                <EditarUrgencia />
                 </PrivateRoute>
             } />
                 

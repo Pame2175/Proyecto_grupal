@@ -36,7 +36,7 @@ const SocketLogic = () => {
         if (user.role !== 'admin') {
             socket.on('urgenciaActualizada', (urgencia) => {
                 console.log("Urgencia actualizada:", urgencia);
-                Swal.fire('Urgencia Recibida', urgencia, 'info').then(() => {
+                Swal.fire('Urgencia Atendida', urgencia, 'info').then(() => {
                     // Redireccionar a la lista de mascotas
                     navigate('/mascota/list');
                 });

@@ -86,6 +86,41 @@ module.exports = {
             res.status(500).json({ error: 'Error interno del servidor al obtener la Urgencia' });
         }
     },
+
+    //actualizar Urgencia 
+    updateUrgenciaById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const { user, descripcion, lat, lng, calle, estado, titulo, user_name, mascota } = req.body;
+            const urgenciaActualizada = await UrgenciaModel.findByIdAndUpdate(
+                id,
+                { user, descripcion, lat, lng, calle, estado, titulo, user_name, mascota },
+                { new: true }
+            );
+            if (!urgenciaActualizada) {
+                return res.status(404).json({ error: 'Urgencia no encontrada' });
+            }
+            res.status(200).json(urgenciaActualizada);
+        } catch (error) {
+            console.error('Error al actualizar la Urgencia por ID:', error);
+            res.status(500).json({ error: 'Error interno del servidor al actualizar la Urgencia' });
+        }
+    },
+
+    //eliminar Urgencia por ID
+    deleteUrgenciaById: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const urgenciaEliminada = await UrgenciaModel.findByIdAndDelete(id);
+            if (!urgenciaEliminada) {
+                return res.status(404).json({ error: 'Urgencia no encontrada' });
+            }
+            res.status(200).json({ message: 'Urgencia eliminada correctamente' });
+        } catch (error) {
+            console.error('Error al eliminar la Urgencia por ID:', error);
+            res.status(500).json({ error: 'Error interno del servidor al eliminar la Urgencia' });
+        }
+    }
 }
 
 

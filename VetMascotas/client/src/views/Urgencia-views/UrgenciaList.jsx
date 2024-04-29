@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import NavBar from "../../components/NavBar";
-
+import Swal from "sweetalert2";
 const UrgenciaList = () => {
     const [urgencias, setUrgencias] = useState([]);
 
@@ -18,6 +18,40 @@ const UrgenciaList = () => {
 
         fetchUrgencias();
     }, []);
+
+    const handleDelete = async (id) => {
+      try {
+          const confirmDelete = await Swal.fire({
+              icon: "warning",
+              title: "¿Estás seguro?",
+              text: "Esta acción no se puede deshacer.",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Sí, eliminar"
+          });
+  
+          if (confirmDelete.isConfirmed) {
+              await axios.delete(`http://localhost:8000/api/urgencia/urgencia/${id}`);
+              const updatedUrgencias = urgencias.filter((urgencia) => urgencia._id !== id);
+              setUrgencias(updatedUrgencias);
+  
+              Swal.fire({
+                  icon: "success",
+                  title: "¡Éxito!",
+                  text: "Urgencia eliminada correctamente",
+              });
+          }
+      } catch (error) {
+          console.error("Error al eliminar la Urgencia:", error);
+      }
+  };
+//ordenar las urgencias por mas reciente a mas antiguo
+  const urgenciasOrdenadas = urgencias.sort((a, b) => {
+    const fechaA = new Date(a.fecha);
+    const fechaB = new Date(b.fecha);
+    return fechaB - fechaA;
+  })
 
     const formatDate = (dateString) => {
         const fecha = new Date(dateString);
@@ -53,7 +87,7 @@ const UrgenciaList = () => {
               </tr>
             </thead>
             <tbody>
-              {urgencias.map((urgencia) => (
+              {urgenciasOrdenadas.map((urgencia) => (
                 <tr key={urgencia._id}>
                   <td style={{ fontWeight: 'bold' }}>{urgencia.titulo}</td>
                   <td className="small">{formatDate(urgencia.fecha)}</td>
@@ -63,11 +97,19 @@ const UrgenciaList = () => {
                   <td className="text-muted">{urgencia.estado}</td>
                   <td>
                     <Link
-                      to={`/urgencia/${urgencia._id}`}
+                      to={`/mascota/urgencia/${urgencia._id}`}
                       className="btn btn-primary"
                     >
-                      Ver
+                      Editar
                     </Link>
+                  </td>
+                  <td>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleDelete(urgencia._id)}
+                    >
+                      Eliminar
+                    </button>
                   </td>
                 </tr>
               ))}
