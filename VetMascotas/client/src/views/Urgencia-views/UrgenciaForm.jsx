@@ -8,6 +8,7 @@ import NavBar from "../../components/NavBar";
 import validationSchema from "./UrgenciaFormValidation";
 import MapComponent from "./MapComponent";
 
+
 import { io } from 'socket.io-client';
 
 const socket = io('http://localhost:8000');
@@ -16,9 +17,10 @@ const UrgenciaForm = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
     const id = user._id;
+    
     const handleSubmit = async (
         values,
-        { setSubmitting, resetForm, setErrors }
+        { setSubmitting, resetForm ,setFieldValue, setErrors }
     ) => {
         console.log("submiting", values);
         try {
@@ -34,7 +36,9 @@ const UrgenciaForm = () => {
             });
             
             socket.emit('formularioEnviado', response.data.urgencia);
-            console.log('datos', response.data);
+            const nombreMascota = response.data.urgencia.mascota;
+            setFieldValue('mascota', nombreMascota);
+            console.log("nombre de la mascota:", nombreMascota);
             resetForm();
             setSubmitting(false);
             navigate("/");
@@ -61,6 +65,7 @@ const UrgenciaForm = () => {
                 user: id,
                 titulo: "",
                 mascota: "",
+                
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -91,7 +96,7 @@ const UrgenciaForm = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="fecha">Nombre del propietario</label>
+                                    <label htmlFor="user">Nombre del propietario</label>
                                     <Field
                                         type="text"
                                         name="user_name"
@@ -105,17 +110,12 @@ const UrgenciaForm = () => {
                                     />
                                 </div>
                                 <div className="form-group">
-                                    <label htmlFor="fecha">Nombre de la mascota</label>
+                                    <label htmlFor="mascota">Nombre de la mascota</label>
                                     <Field
                                         type="text"
-                                        name="user_name"
+                                        name="mascota"
                                         className="form-control"
-                                    //value={mascotaNombre}
-                                    />
-                                    <ErrorMessage
-                                        name="firstName"
-                                        component="div"
-                                        className="alert alert-danger"
+                                        value={values.mascota}
                                     />
                                 </div>
                                 <div className="form-group">
@@ -128,8 +128,8 @@ const UrgenciaForm = () => {
                                     />
                                     <ErrorMessage
                                         name="descripcion"
-                                        component="textarea"
-                                        className="alert alert-danger"
+                                        component="div"
+                                        className="alert alert-danger mt-2"
                                     />
                                 </div>
 
