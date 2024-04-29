@@ -3,6 +3,8 @@ const UrgenciasController = require("../controllers/urgencias.controller");
 
 const UrgenciaRouter = express.Router();
 
+
+
 //API/URGENCIA
 // registrar una nueva Urgencia 
 UrgenciaRouter.post('/registrar-urgencia', UrgenciasController.createUrgencia);

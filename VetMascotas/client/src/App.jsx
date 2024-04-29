@@ -18,6 +18,9 @@ import EditarCitas  from './views/EditarCitas';
 import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
 import UrgenciaList from './views/Urgencia-views/UrgenciaList';
 
+//socket.io
+import SocketLogic from './views/Urgencia-views/SocketioLogic';
+
 
 const App = () => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -33,9 +36,11 @@ const App = () => {
         setUser,
         setUserKeyValue
     }
+    
 
     return (
         <UserContext.Provider value={contextObject}>
+            <SocketLogic /> 
             <Routes>
                 <Route path="/" element={<Navigate to="/mascota/list" />} />
                 <Route path="/login" element={

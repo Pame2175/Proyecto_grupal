@@ -37,7 +37,7 @@ const UrgenciaSchema = new mongoose.Schema({
     },
     estado: {
         type: String,
-        enum: ['Pendiente', 'Atendida'],
+        enum: ['Pendiente', 'Atendida', 'En proceso'],
         default: 'Pendiente'
     }
 });

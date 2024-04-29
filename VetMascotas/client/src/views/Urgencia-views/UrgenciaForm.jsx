@@ -8,6 +8,10 @@ import NavBar from "../../components/NavBar";
 import validationSchema from "./UrgenciaFormValidation";
 import MapComponent from "./MapComponent";
 
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:8000');
+
 const UrgenciaForm = () => {
     const { user } = useContext(UserContext);
     const navigate = useNavigate();
@@ -15,19 +19,21 @@ const UrgenciaForm = () => {
     const handleSubmit = async (
         values,
         { setSubmitting, resetForm, setErrors }
-      ) => {
+    ) => {
         console.log("submiting", values);
         try {
-          const response = await axios.post("http://localhost:8000/api/urgencia/registrar-urgencia",
-            values,
-            { withCredentials: true }
-          );
-            
+            const response = await axios.post("http://localhost:8000/api/urgencia/registrar-urgencia",
+                values,
+                { withCredentials: true }
+            );
+
             Swal.fire({
                 icon: "success",
                 title: "¡Éxito!",
-                text: "¡Urgencia registrada exitosamente!",
+                text:response.data.message,
             });
+            
+            socket.emit('formularioEnviado', response.data.urgencia);
             console.log('datos', response.data);
             resetForm();
             setSubmitting(false);
@@ -53,8 +59,8 @@ const UrgenciaForm = () => {
                 calle: "",
                 descripcion: "",
                 user: id,
-                titulo: "", 
-                mascota:"",
+                titulo: "",
+                mascota: "",
             }}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -69,6 +75,8 @@ const UrgenciaForm = () => {
                                 <Field type="hidden" name="lat" />
                                 <Field type="hidden" name="lng" />
                                 <Field type="hidden" name="calle" />
+
+
                                 <div className="form-group">
                                     <label htmlFor="titulo">Título</label>
                                     <Field
@@ -102,7 +110,7 @@ const UrgenciaForm = () => {
                                         type="text"
                                         name="user_name"
                                         className="form-control"
-                                        //value={mascotaNombre}
+                                    //value={mascotaNombre}
                                     />
                                     <ErrorMessage
                                         name="firstName"
@@ -124,34 +132,34 @@ const UrgenciaForm = () => {
                                         className="alert alert-danger"
                                     />
                                 </div>
-                                
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary mt-3"
-                                        disabled={isSubmitting}
-                                    >
-                                        Enviar
-                                    </button>
-                                    <p className="text-primary mt-3">{values.calle}</p> 
-                                    </Form>
+
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary mt-3"
+                                    disabled={isSubmitting}
+                                >
+                                    Enviar
+                                </button>
+                                <p className="text-primary mt-3">{values.calle}</p>
+                            </Form>
                         </div>
-                            <MapComponent
-                                setLocationValues={(lat, lng, calle) => {
-                                    // Actualizamos los valores de lat, lng y calle usando setFieldValue
-                                    setFieldValue("lat", lat);
-                                    setFieldValue("lng", lng);
-                                    setFieldValue("calle", calle);
-                                    //console.log("lat:", lat, "lng:", lng, "calle:", calle);
-                                }}
-                                lat={values.lat}
-                                lng={values.lng}
-                                street={values.calle}
-                            />
-                        </div>
-                    </>
+                        <MapComponent
+                            setLocationValues={(lat, lng, calle) => {
+                                // Actualizamos los valores de lat, lng y calle usando setFieldValue
+                                setFieldValue("lat", lat);
+                                setFieldValue("lng", lng);
+                                setFieldValue("calle", calle);
+                                //console.log("lat:", lat, "lng:", lng, "calle:", calle);
+                            }}
+                            lat={values.lat}
+                            lng={values.lng}
+                            street={values.calle}
+                        />
+                    </div>
+                </>
             )}
-                </Formik>
-            );
+        </Formik>
+    );
 };
 
 
