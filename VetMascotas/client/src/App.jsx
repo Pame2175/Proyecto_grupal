@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import ListMascota from './views/ListMascota';
 import AddMascotas from './views/AddMascotas';
@@ -17,6 +17,13 @@ import Calendar from './views/calendar';
 import ListEvent from './views/ListEvent';
 
 
+//urgencias
+import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
+import UrgenciaList from './views/Urgencia-views/UrgenciaList';
+import EditarUrgencia from './views/Urgencia-views/EditarUrgencia';
+//socket.io
+import SocketLogic from './views/Urgencia-views/SocketioLogic';
+
 
 const App = () => {
     const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -32,9 +39,11 @@ const App = () => {
         setUser,
         setUserKeyValue
     }
+    
 
     return (
         <UserContext.Provider value={contextObject}>
+            <SocketLogic /> 
             <Routes>
                 <Route path="/" element={<Navigate to="/mascota/list" />} />
                 <Route path="/login" element={
@@ -65,6 +74,25 @@ const App = () => {
                     <Route path="/mascota/listevent" element={<ListEvent/>} />
                     
                 </Route>
+                
+                <Route path="/mascota/urgencia/crear" element={
+                <PrivateRoute>
+                <UrgenciaForm />
+                </PrivateRoute>
+            } />
+
+                <Route path="/mascota/lista/urgencia" element={
+                <PrivateRoute>
+                <UrgenciaList />
+                </PrivateRoute>
+            } />
+
+                <Route path="/mascota/urgencia/:id" element={
+                <PrivateRoute>
+                <EditarUrgencia />
+                </PrivateRoute>
+            } />
+                
                 
                 
                 

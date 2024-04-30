@@ -1,0 +1,13 @@
+# Dependencias de Node.js
+node_modules/
+
+# Archivo de configuración de Node.js
+.env
+package-lock.json
+# Dependencias de React
+build/
+
+# Archivos generados por Create React App
+.cache/
+public/
+src/__tests__/
