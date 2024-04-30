@@ -5,7 +5,6 @@ const eventoSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
-        trim: true,
     },
     start: {
         type: Date,
@@ -19,6 +18,10 @@ const eventoSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    direption: {
+        type: String,
+        trim: true,
+    },
     eventType: {
         type: String,
         trim: true,
@@ -26,6 +29,11 @@ const eventoSchema = new mongoose.Schema({
     color: {
         type: String,
         trim: true,
+    },
+    ownerId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
     createdAt: {
         type: Date,
@@ -43,8 +51,6 @@ eventoSchema.pre('save', function (next) {
     next();
 });
 
-
 const Evento = mongoose.model('Evento', eventoSchema);
-
 
 module.exports = Evento;

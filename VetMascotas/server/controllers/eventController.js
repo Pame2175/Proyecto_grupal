@@ -3,14 +3,16 @@ const Evento = require('../models/calendario_evento');
 // Controlador para crear un nuevo evento
 exports.createEvent = async (req, res) => {
     try {
-        const { title, start, end, description, eventType, color } = req.body;
+        const { title, start, end, description, eventType, color, ownerId, direption} = req.body;
         const newEvent = new Evento({
             title,
             start,
             end,
             description,
+            direption,
             eventType,
-            color
+            color,
+            ownerId
         });
         await newEvent.save();
         res.status(201).json({ message: 'Evento creado exitosamente', event: newEvent });

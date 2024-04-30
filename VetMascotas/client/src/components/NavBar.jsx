@@ -4,6 +4,7 @@ import { useContext } from "react";
 import UserContext from '../context/UserContext';
 
 const NavBar = () => {
+    const { user } = useContext(UserContext);
     const { setUser } = useContext(UserContext);
     const navigate = useNavigate();
 
@@ -47,8 +48,19 @@ const NavBar = () => {
                 </div>
                 <div className="navbar-nav ml-auto">
                     <li className="nav-item">
-                        <NavLink to="/mascota/cita/urgencias" className="btn btn-primary me-2">Agendar</NavLink>
+                        {user.role === 'admin' && (
+                            <NavLink to="/mascota/calendar/event" className="btn btn-primary me-2">Agendar</NavLink>
+
+                        )}
                     </li>
+                    <li className="nav-item">
+                        {user.role === 'user' && (
+                            <NavLink to="/mascota/listevent" className="btn btn-warning me-2">Lista de Eventos</NavLink>
+
+                        )}
+                    </li>
+
+
                     <button onClick={handleLogout} className="btn btn-outline-danger my-2 my-sm-0" type="button">Salir</button>
                 </div>
             </div>
