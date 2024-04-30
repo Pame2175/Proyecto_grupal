@@ -1,4 +1,4 @@
-// models/Raza.js
+
 const mongoose = require('mongoose');
 
 const RazaSchema = new mongoose.Schema({

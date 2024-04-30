@@ -69,31 +69,50 @@ const NavBar = () => {
             )}
           </ul>
         </div>
-        {user?.role === "user" && (
-            <div className="d-flex">
-          <NavLink
-            to="/mascota/urgencia/crear"
-            className="btn btn-danger"
-            style={{ marginRight: "10px" }}
-            type="button"
-          >
-            URGENCIAS
-          </NavLink>
-        </div>
-        )}
-        
         <div className="navbar-nav ml-auto">
-          <button
-            onClick={handleLogout}
-            className="btn btn-outline-danger my-2 my-sm-0"
-            type="button"
-          >
-            Salir
-          </button>
+          <li className="nav-item">
+            {user.role === "admin" && (
+              <NavLink
+                to="/mascota/calendar/event"
+                className="btn btn-primary me-2"
+              >
+                Agendar
+              </NavLink>
+            )}
+          </li>
+          <li className="nav-item">
+            {user.role === "user" && (
+              <NavLink to="/mascota/listevent" className="btn btn-warning me-2">
+                Lista de Eventos
+              </NavLink>
+            )}
+          </li>
+
+          {user?.role === "user" && (
+            <div className="d-flex">
+              <NavLink
+                to="/mascota/urgencia/crear"
+                className="btn btn-danger"
+                style={{ marginRight: "10px" }}
+                type="button"
+              >
+                URGENCIAS
+              </NavLink>
+            </div>
+          )}
+
+          <div className="navbar-nav ml-auto">
+            <button
+              onClick={handleLogout}
+              className="btn btn-outline-danger my-2 my-sm-0"
+              type="button"
+            >
+              Salir
+            </button>
+          </div>
         </div>
       </div>
     </nav>
   );
 };
-
 export default NavBar;

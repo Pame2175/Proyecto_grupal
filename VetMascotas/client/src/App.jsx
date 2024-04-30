@@ -13,6 +13,9 @@ import InfoVeterinaria from './views/InfoVeterinaria';
 import Register from './views/Register';
 import VerCitas  from './views/VerCitas';
 import EditarCitas  from './views/EditarCitas';
+import Calendar from './views/calendar';
+import ListEvent from './views/ListEvent';
+
 
 //urgencias
 import UrgenciaForm from './views/Urgencia-views/UrgenciaForm';
@@ -67,6 +70,8 @@ const App = () => {
                     <Route path="editar/:id" element={<EditMascotas />} />
                     <Route path="cita/:id" element={<AgendarMascotas />} />
                     <Route path="infoVeterinaria" element={< InfoVeterinaria />} />
+                    <Route path="/mascota/calendar/event" element={<Calendar />} />
+                    <Route path="/mascota/listevent" element={<ListEvent/>} />
                     
                 </Route>
                 

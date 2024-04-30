@@ -3,7 +3,7 @@ node_modules/
 
 # Archivo de configuración de Node.js
 .env
-
+package-lock.json
 # Dependencias de React
 build/
 
