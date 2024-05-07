@@ -1,0 +1,58 @@
+/* MyCalendar.css */
+
+/* Estilo del formulario */
+.form-wrapper {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f8f9fa; /* Color de fondo */
+  }
+  
+  .form-title {
+    font-size: 1.5rem; /* Tamaño del título del formulario */
+    font-weight: bold;
+    color: #333; /* Color del texto */
+  }
+  
+  .my-form .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .my-form label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #333; /* Color de texto */
+  }
+  
+  .my-form input[type="text"],
+  .my-form input[type="datetime-local"],
+  .my-form textarea,
+  .my-form select {
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    padding: 8px;
+  }
+  
+  .my-form button[type="submit"] {
+    margin-top: 20px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    background-color: #007bff; /* Color de fondo del botón */
+    color: #fff; /* Color de texto del botón */
+  }
+  
+  .my-form button[type="submit"]:hover {
+    background-color: #0056b3; /* Color de fondo del botón al pasar el ratón */
+  }
+  .title-label {
+    font-size: 80px; /* Tamaño de fuente más grande */
+    font-style: italic; /* Texto en cursiva */
+    font-weight: bold; /* Texto en negrita */
+    margin-bottom: 20px; /* Espacio entre el título y los campos del formulario */
+  }
+  
+  
+  
+  

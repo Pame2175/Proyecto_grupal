@@ -5,6 +5,7 @@ const CitasController = require('../controllers/agendar_cita');
 const VeterinarioController = require('../controllers/veterinarios');
 const horariosController = require('../controllers/horarios.veterinarios');
 const eventController = require('../controllers/eventController');
+const correoController = require('../controllers/email.controller');
 const { authenticate } = require('../config/jwt.config');
 
 const MascotaRouter = express.Router();
@@ -14,6 +15,9 @@ MascotaRouter.post('/registrar-mascota', MascotaController.crearMascota);
 MascotaRouter.post('/events', eventController.createEvent);
 MascotaRouter.get('/events/list', eventController.getAllEvents);
 MascotaRouter.delete('/events/:id', eventController.deleteEvent);
+
+
+MascotaRouter.post('/enviar-correos', correoController.enviarCorreosUsuarios);
 // Ruta para obtener los tipos de animales
 MascotaRouter.get('/tipos-de-animales', DatosRelacionadosController.obtenerTiposDeAnimales);
 

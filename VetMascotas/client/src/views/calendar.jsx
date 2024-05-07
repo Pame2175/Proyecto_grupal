@@ -4,9 +4,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from "moment";
 import Swal from 'sweetalert2';
 import { Form, Button, Row, Col } from "react-bootstrap";
-
+import "../css_calendar/MyCalendar.css"; // Importa tu archivo CSS personalizado
 import UserContext from "../context/UserContext";
-
+import "../css_calendar/MyCalendar.css"; // Importar estilos personalizados
 
 const localizer = momentLocalizer(moment);
 
@@ -45,6 +45,20 @@ const MyCalendar = () => {
 
     fetchEvents();
   }, []);
+
+  const enviarCorreo = async () => {
+    try {
+      const correoResponse = await fetch('http://localhost:8000/api/mascota/enviar-correos', {
+        method: 'POST',
+      });
+
+      if (!correoResponse.ok) {
+        throw new Error('Error al enviar correos electrónicos');
+      }
+    } catch (error) {
+      console.error('Error al enviar correos electrónicos:', error);
+    }
+  };
 
 
   const handleSlotSelect = (slotInfo) => {
@@ -98,6 +112,21 @@ const MyCalendar = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Alerta de confirmación antes de enviar el evento
+    const confirmation = await Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas enviar este evento y notificar por correo electrónico?',
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, enviar',
+      cancelButtonText: 'Cancelar'
+    });
+
+    if (!confirmation.isConfirmed) return; // Si el usuario cancela, no se envía el evento
+
     try {
       const response = await fetch('http://localhost:8000/api/mascota/events', {
         method: 'POST',
@@ -119,11 +148,14 @@ const MyCalendar = () => {
       if (!response.ok) {
         throw new Error('Error al enviar el evento');
       }
+         // Envía el correo electrónico después de enviar el evento
+       
+     
 
       const data = await response.json();
       console.log('Evento enviado exitosamente:', data);
       window.location.reload();
-
+      await enviarCorreo();
       setEvents([...events, data.event]);
       setSelectedSlot(null); // Desaparecer el formulario
 
@@ -134,6 +166,9 @@ const MyCalendar = () => {
         showConfirmButton: false,
         timer: 1500 // Cerrar automáticamente después de 1.5 segundos
       });
+
+     
+
     } catch (error) {
       console.error('Error al enviar el evento:', error);
     }
@@ -221,109 +256,131 @@ const MyCalendar = () => {
 
   return (
     <div className="calendar-container">
-      <Row>
-        <Col sm={8} md={9}>
-          <div className="calendar-wrapper">
-            <Calendar
-              localizer={localizer}
-              events={events}
-              startAccessor="start"
-              endAccessor="end"
-              selectable
-              onSelectSlot={handleSlotSelect}
-              onSelectEvent={handleEventSelect}
-              eventPropGetter={eventStyleGetter} // Utilizar la función eventStyleGetter para obtener el estilo de los eventos
-              style={{ height: 500, width: "100%" }} // Ajustar el tamaño del calendario
-            />
-          </div>
-        </Col>
-        <Col sm={4} md={3}>
-          <div className="form-wrapper">
-            {selectedSlot && (
-              <Form onSubmit={handleSubmit}>
-                <Form.Label>Agregar Evento:</Form.Label>
-                <Form.Group controlId="title">
-                  <Form.Label>Título del Evento:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="title"
-                    value={formData.title}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group controlId="description">
-                  <Form.Label>Descripción:</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    name="description"
-                    value={formData.description}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group controlId="direption">
-                  <Form.Label>Dirección:</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="direption"  
-                    value={formData.direption}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
+    <Row>
+  <Col sm={12} md={6}>
+    <div className="calendar-wrapper">
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        selectable
+        onSelectSlot={handleSlotSelect}
+        onSelectEvent={handleEventSelect}
+        eventPropGetter={eventStyleGetter}
+        style={{ height: 500, width: "100%" }}
+      />
+    </div>
+  </Col>
+  <Col sm={12} md={6}>
+    <div className="form-wrapper">
+      {selectedSlot && (
+        <Form onSubmit={handleSubmit} className="my-form">
+          <Form.Label className="title-label">Agregar Evento:</Form.Label>
 
-                <Form.Group controlId="eventType">
-                  <Form.Label>Tipo de Evento:</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="eventType"
-                    value={formData.eventType}
-                    onChange={handleChange}
-                    required
-                  >
-                    <option value="">Selecciona el tipo de evento</option>
-                    <option value="Reunión">Reunión</option>
-                    <option value="Conferencia">Conferencia</option>
-                    <option value="Fiesta">Fiesta</option>
-                  </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="eventColor">
-                  <Form.Label>Color del Evento:</Form.Label>
-                  <Form.Control
-                    type="color"
-                    name="eventColor"
-                    value={formData.eventColor}
-                    onChange={handleChange}
-                  />
-                </Form.Group>
-                <Form.Group controlId="startTime">
-                  <Form.Label>Hora de inicio:</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    name="startTime"
-                    value={formData.startTime}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-                <Form.Group controlId="endTime">
-                  <Form.Label>Hora de fin:</Form.Label>
-                  <Form.Control
-                    type="datetime-local"
-                    name="endTime"
-                    value={formData.endTime}
-                    onChange={handleChange}
-                    required
-                  />
-                </Form.Group>
-                <Button variant="primary" type="submit">
-                  Guardar
-                </Button>
-              </Form>
-            )}
-          </div>
-        </Col>
-      </Row>
+          <Form.Group controlId="title" className="mb-3">
+            <Form.Label>Título del Evento:</Form.Label>
+            <Form.Control
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Row className="mb-3">
+            <Col>
+              <Form.Group controlId="description">
+                <Form.Label>Descripción:</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  required
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="direption">
+                <Form.Label>Dirección:</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="direption"
+                  value={formData.direption}
+                  onChange={handleChange}
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Form.Group controlId="eventType" className="mb-3">
+            <Form.Label>Tipo de Evento:</Form.Label>
+            <Form.Control
+              as="select"
+              name="eventType"
+              value={formData.eventType}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecciona el tipo de evento</option>
+              <option value="Reunión">Reunión</option>
+              <option value="Conferencia">Conferencia</option>
+              <option value="Fiesta">Fiesta</option>
+            </Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="eventColor" className="mb-3">
+            <Form.Label>Color del Evento:</Form.Label>
+            <Form.Control
+              type="color"
+              name="eventColor"
+              value={formData.eventColor}
+              onChange={handleChange}
+            />
+          </Form.Group>
+
+          <Row className="mb-3">
+            <Col>
+              <Form.Group controlId="startTime">
+                <Form.Label>Hora de inicio:</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  name="startTime"
+                  value={formData.startTime}
+                  onChange={handleChange}
+                  required
+                  min="09:00"
+                  max="22:00"
+                />
+              </Form.Group>
+            </Col>
+            <Col>
+              <Form.Group controlId="endTime">
+                <Form.Label>Hora de fin:</Form.Label>
+                <Form.Control
+                  type="datetime-local"
+                  name="endTime"
+                  value={formData.endTime}
+                  onChange={handleChange}
+                  required
+                  min="09:00"
+                  max="22:00"
+                />
+              </Form.Group>
+            </Col>
+          </Row>
+
+          <Button variant="primary" type="submit">
+            Guardar
+          </Button>
+        </Form>
+      )}
+    </div>
+  </Col>
+</Row>
+
     </div>
   );
 };

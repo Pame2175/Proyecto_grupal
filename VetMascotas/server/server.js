@@ -3,6 +3,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser"); // to be able to read cookies
+// emailService.js
+const nodemailer = require('nodemailer');
+const User = require('./models/user.model');
 
 const http = require("http"); // módulo para crear un servidor HTTP
 const { Server } = require("socket.io");
@@ -72,6 +75,43 @@ io.on("connection", (socket) => {
 
 });
 
+
+
+const transport = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "0e02d21ce27490",
+    pass: "4ee721ef2b6a78"
+  }
+});
+
+async function enviarCorreo(usuario) {
+  try {
+    const mailOptions = {
+      from: 'pamegonza.98.pg@gmail.com',
+      to: usuario.email,
+      subject: 'Asunto del correo electrónico',
+      text: 'Contenido del correo electrónico'
+    };
+  
+    const info = await transport.sendMail(mailOptions);
+    console.log('Correo electrónico enviado a', usuario.email, ':', info.response);
+  } catch (error) {
+    console.error('Error al enviar correo electrónico a', usuario.email, ':', error);
+  }
+}
+
+async function enviarCorreos() {
+  try {
+    const usuarios = await User.find({});
+    usuarios.forEach(enviarCorreo);
+  } catch (error) {
+    console.error('Error al obtener usuarios:', error);
+  }
+}
+
+module.exports = { enviarCorreos };
 
 
 server.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
